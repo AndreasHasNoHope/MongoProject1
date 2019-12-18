@@ -2,10 +2,15 @@
 const express = require("express");
 const cors = require("cors");
 require('dotenv').config();
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 // Require MongoDB connection and Models
 require("./config/db");
+
+//Require Controllers
+const UsersController = require("./controllers/UsersController");
+const ProductsController = require("./controllers/ProductsController");
+const CategoriesController = require("./controllers/CategoriesController");
 
 //Initialize my Express App
 const app = express();
@@ -15,52 +20,32 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+// Home Route
 app.get("/",(req,res) => {
     res.send("Ok");
 });
 
-/*app.get("/create-user", (req, res) => {
-    let u = new User({
-        firstName: "Paok",
-        LastName: "Tsm",
-        email: "tsimtsiris1999@gmail.com"
-    });
-    u.save().then(() =>{
-        res.json(u);
-    });
-});
-otan mpeneis sto /create-use kanei new user
-*/
 
-app.get ("/users",(req,res) => {
-    User.find({}, (err, users) => {
-        res.json(users);
-    });
-});
+// User Routes
+app.get ("/users", UsersController.list);
+app.get("/users/:userId",UsersController.getOne);
+app.post("/users", UsersController.create);
+app.delete("/users/:userId",UsersController.deleteUser);
+app.put("/users/:userId",UsersController.update);
 
-app.get("/users/:userId",(req,res) => {
-    User.findById(req.params.userId, (err, users) => {
-        res.json(users);
-    });
-});
+// Product Routes
 
-app.post("/users", (req, res) =>{
-    const u = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email
-    });
-    u.save().then(() => {
-        res.json({
-            message: "User Created"
-        })
-    });
-});
+app.get ("/products", ProductsController.list);
+app.get("/products/:productId",ProductsController.getOne);
+app.post("/products", ProductsController.create);
+app.delete("/products/:productId",ProductsController.deleteProduct);
+app.put("/products/:productId",ProductsController.update);
+app.get("/products/category/:categoryId",ProductsController.listByCategory);
 
-app.delete("/users/:userId",(req,res) => {
-    User.deleteOne({_id: req.params.userId}, (err) => {
-        res.json({
-            message: "User Deleted"
-        });
-    });
-});
+// Category Routes
+app.get ("/categories", CategoriesController.list);
+app.get("/categories/:categoryId",CategoriesController.getOne);
+app.post("/categories", CategoriesController.create);
+app.delete("/categories/:categoryId",CategoriesController.deleteCategory);
+app.put("/categories/:categoryId",CategoriesController.update);
