@@ -12,7 +12,10 @@ global.User = mongoose.model("User",{
 });
 
 global.Product = mongoose.model("Product",{
-    category: mongoose.Types.ObjectId,
+    category: {
+        type: mongoose.Types.ObjectId,
+        ref: "Category"
+    },
     title: String,
     miniDesc: String,
     desc: String,

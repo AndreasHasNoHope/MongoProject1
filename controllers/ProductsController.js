@@ -1,16 +1,18 @@
-const list = (req,res) => {
-    Product.find({}, (err, products) => {
-        res.json(products);
-    });
+const list = async (req,res) => {
+   const products = await Product.find({})
+        .populate("category")
+        .exec();
+    res.json(products);
 };
 
-const getOne = (req,res) => {
-    Product.findById(req.params.productId, (err, products) => {
-        res.json(products);
-    });
+const getOne = async (req,res) => {
+    const products = await Product.findById(req.params.productId)
+        .populate("category")
+        .exec();
+    res.json(products);
 };
 
-const create = (req, res) =>{
+const create = async (req, res) =>{
     const p = new Product({
         category: req.body.category,
         title: req.body.title,
@@ -20,22 +22,20 @@ const create = (req, res) =>{
         sale: req.body.sale,
         photo: req.body.photo
     });
-    p.save().then(() => {
+    await p.save();
         res.json({
             message: "Product Created"
         })
-    });
 };
-const deleteProduct = (req,res) => {
-    Product.deleteOne({_id: req.params.productId}, (err) => {
-        res.json({
-            message: "Product Deleted"
-        });
-    });
+const deleteProduct = async (req,res) => {
+    await Product
+        .deleteOne({_id: req.params.productId})
+        .exec();
+    res.json({message: "Product Deleted"});
 };
 
-const update = (req,res) => {
-    Product.updateOne({_id: req.params.productId}, {
+const update = async (req,res) => {
+   await Product.updateOne({_id: req.params.productId}, {
         category: req.body.category,
         title: req.body.title,
         miniDesc: req.body.miniDesc,
@@ -43,17 +43,17 @@ const update = (req,res) => {
         price: req.body.price,
         sale: req.body.sale,
         photo: req.body.photo
-    }, (err) => {
-        res.json({
-            message: "Product Updated"
-        });
+        }).exec();
+    res.json({
+        message: "Product Updated"
     });
 };
 
-const listByCategory = (req,res) => {
-    Product.find({Category: req.params.categoryId}, (err, products) => {
+const listByCategory = async (req,res) => {
+   const products = await Product
+       .find({Category: req.params.categoryId})
+       .exec();
         res.json(products);
-    });
 };
 
 
@@ -66,3 +66,4 @@ module.exports = {
     listByCategory
 
 };
+

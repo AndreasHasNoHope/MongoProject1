@@ -10,17 +10,16 @@ const getOne = (req,res) => {
     });
 };
 
-const create = (req, res) =>{
+const create = async (req, res) =>{
     const u = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email
     });
-    u.save().then(() => {
+    await u.save();
         res.json({
             message: "User Created"
         })
-    });
 };
 const deleteUser = (req,res) => {
     User.deleteOne({_id: req.params.userId}, (err) => {

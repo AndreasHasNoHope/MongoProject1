@@ -1,7 +1,8 @@
-const list = (req,res) => {
-    Category.find({}, (err, categories) => {
+const list = async (req,res) => {
+    const categories = await Category
+        .find({})
+        .exec();
         res.json(categories);
-    });
 };
 
 const getOne = (req,res) => {
@@ -10,15 +11,15 @@ const getOne = (req,res) => {
     });
 };
 
-const create = (req, res) =>{
+const create = async (req, res) =>{
     const c = new Category ({
         title: req.body.title,
     });
-    c.save().then(() => {
+    await c.save();
         res.json({
             message: "Category Created"
         })
-    });
+
 };
 const deleteCategory = (req,res) => {
     Category.deleteOne({_id: req.params.categoryId}, (err) => {
