@@ -4,6 +4,12 @@ const list = async (req,res) => {
         .exec();
     res.json(products);
 };
+const listCart = async (req,res) => {
+    const products = await Product.find({_id: req.body.productIds},"title price photo")
+        .populate("category")
+        .exec();
+    res.json(products);
+};
 
 const getOne = async (req,res) => {
     const products = await Product.findById(req.params.productId)
@@ -59,6 +65,7 @@ const listByCategory = async (req,res) => {
 
 module.exports = {
     list,
+    listCart,
     getOne,
     create,
     deleteProduct,
