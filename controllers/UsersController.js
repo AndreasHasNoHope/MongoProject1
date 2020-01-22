@@ -1,27 +1,37 @@
-const list = (req,res) => {
+const list = (req, res) => {
     User.find({}, (err, users) => {
         res.json(users);
     });
 };
 
-const getOne = (req,res) => {
+const getOne = (req, res) => {
     User.findById(req.params.userId, (err, users) => {
         res.json(users);
     });
 };
 
-const create = async (req, res) =>{
+const create = (req, res) => {
     const u = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        email: req.body.email
+        email: req.body.email,
+        password: req.body.password
     });
-    await u.save();
-        res.json({
-            message: "User Created"
+    u
+        .save()
+        .then(() => {
+            res.json({
+                message: "User created"
+            });
         })
+        .catch((err) => {
+            res.json({
+                message: "User Not created"
+            });
+        });
 };
-const deleteUser = (req,res) => {
+
+const deleteUser = (req, res) => {
     User.deleteOne({_id: req.params.userId}, (err) => {
         res.json({
             message: "User Deleted"
@@ -29,7 +39,7 @@ const deleteUser = (req,res) => {
     });
 };
 
-const update = (req,res) => {
+const update = (req, res) => {
     User.updateOne({_id: req.params.userId}, {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -47,5 +57,4 @@ module.exports = {
     create,
     deleteUser,
     update
-
 };
