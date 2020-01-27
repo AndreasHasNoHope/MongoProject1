@@ -6,6 +6,7 @@ route.get("/", (req, res) => {
 });
 
 //Admin Routes
+route.use("/auth", require("./auth"));
 route.use("/users", require("./Users"));
 route.use("/products", require("./Products"));
 route.use("/categories", require("./Categories"));

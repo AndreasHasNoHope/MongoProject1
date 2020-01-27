@@ -3,7 +3,6 @@ const list = (req, res) => {
         res.json(users);
     });
 };
-
 const getOne = (req, res) => {
     User.findById(req.params.userId, (err, users) => {
         res.json(users);
@@ -15,18 +14,22 @@ const create = (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        role: req.body.role
     });
     u
         .save()
         .then(() => {
             res.json({
+                success: true,
                 message: "User created"
             });
         })
         .catch((err) => {
             res.json({
-                message: "User Not created"
+                success: false,
+                message: "User Not created",
+                error: err
             });
         });
 };
