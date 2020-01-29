@@ -2,8 +2,10 @@ const jwt = require('jsonwebtoken');
 
 const login = async (req, res) => {
     const user = await User
-        .findOne({email: req.body.email},
-            "firstName lastName")
+        .findOne({
+            email: req.body.email,
+            role: "admin"
+        })
         .exec();
     // If there is no user with this email
     if(user === null) {
@@ -20,7 +22,7 @@ const login = async (req, res) => {
             lastName: user.lastName,
             email: user.email,
         }, proccess.env.JTW_SECRET,
-            {expiresIn: proccess.env.JTW_SECRET });
+            { expiresIn: proccess.env.JTW_SECRET });
 
         return res.json({
             success: true,
@@ -46,7 +48,8 @@ const register = async (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        role: req.body.role
     });
     u.save()
         .then(() => {
@@ -87,7 +90,7 @@ const adminlogin = async (req, res) => {
                 lastName: user.lastName,
                 email: user.email,
             }, proccess.env.JTW_SECRET,
-            {expiresIn: proccess.env.JTW_SECRET });
+            {expiresIn: proccess.env.JTW_EXPIRES });
 
         return res.json({
             success: true,

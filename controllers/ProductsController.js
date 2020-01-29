@@ -41,8 +41,8 @@ const create = async (req, res) => {
     const u = new Product({
         category: req.body.category,
         title: req.body.title,
-        miniDescription: req.body.miniDescription,
-        description: req.body.description,
+        miniDesc: req.body.miniDescription,
+        desc: req.body.desc,
         price: req.body.price,
         sale: req.body.sale,
         photo: req.body.photo
@@ -66,8 +66,8 @@ const update = async (req, res) => {
         {
             category: req.body.category,
             title: req.body.title,
-            miniDescription: req.body.miniDescription,
-            description: req.body.description,
+            miniDesc: req.body.miniDesc,
+            desc: req.body.desc,
             price: req.body.price,
             sale: req.body.sale,
             photo: req.body.photo

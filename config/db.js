@@ -46,8 +46,8 @@ const productSchema = mongoose.Schema({
         ref: "Category"
     },
     title: String,
-    miniDescription: String,
-    description: String,
+    miniDesc: String,
+    desc: String,
     price: Number,
     sale: Number,
     photo: String
