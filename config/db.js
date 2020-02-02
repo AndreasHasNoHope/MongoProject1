@@ -46,8 +46,8 @@ const productSchema = mongoose.Schema({
         ref: "Category"
     },
     title: String,
-    miniDesc: String,
-    desc: String,
+    miniDescription: String,
+    description: String,
     price: Number,
     sale: Number,
     photo: String
@@ -61,7 +61,8 @@ global.Product = mongoose.model("Product", productSchema);
 const categorySchema = mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     }
 }, {
     timestamps: true

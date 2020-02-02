@@ -1,12 +1,13 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const login = async (req, res) => {
+const adminLogin = async (req, res) => {
     const user = await User
         .findOne({
             email: req.body.email,
             role: "admin"
         })
         .exec();
+
     // If there is no user with this email
     if(user === null) {
         return res.json({
@@ -14,15 +15,20 @@ const login = async (req, res) => {
             message: "Wrong credentials"
         });
     }
+
     if (user.verifyPasswordSync(req.body.password)) {
-        // Success login & Create Token
-        const token = jwt.sign({
-            id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-        }, proccess.env.JTW_SECRET,
-            { expiresIn: proccess.env.JTW_SECRET });
+        // Success login
+        // Create Token
+        const token = jwt.sign(
+            {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email
+            },
+            process.env.JWT_SECRET,
+            {expiresIn: process.env.JWT_EXPIRES_IN}
+        );
 
         return res.json({
             success: true,
@@ -31,7 +37,53 @@ const login = async (req, res) => {
                 _id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                email: user.email,
+                email: user.email
+            }
+        });
+    } else {
+        // login failed
+        return res.json({
+            success: false,
+            message: "Wrong credentials"
+        });
+    }
+};
+
+const login = async (req, res) => {
+    const user = await User
+        .findOne({email: req.body.email})
+        .exec();
+
+    // If there is no user with this email
+    if(user === null) {
+        return res.json({
+            success: false,
+            message: "Wrong credentials"
+        });
+    }
+
+    if (user.verifyPasswordSync(req.body.password)) {
+        // Success login
+        // Create Token
+        const token = jwt.sign(
+            {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email
+            },
+            process.env.JWT_SECRET,
+            {expiresIn: process.env.JWT_EXPIRES}
+        );
+
+        return res.json({
+            success: true,
+            token: token,
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email
             }
         });
     } else {
@@ -48,8 +100,7 @@ const register = async (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: req.body.password,
-        role: req.body.role
+        password: req.body.password
     });
     u.save()
         .then(() => {
@@ -61,59 +112,13 @@ const register = async (req, res) => {
         .catch((err) => {
             res.json({
                 success: false,
-                message: "User Not created",
-                error: err
+                message: "User Not created"
             });
         });
 };
 
-const adminlogin = async (req, res) => {
-    const user = await User
-        .findOne({
-                email: req.body.email,
-                type: admin
-            },
-            "firstName lastName")
-        .exec();
-    // If there is no user with this email
-    if(user === null) {
-        return res.json({
-            success: false,
-            message: "Wrong credentials"
-        });
-    }
-    if (user.verifyPasswordSync(req.body.password)) {
-        // Success login & Create Token
-        const token = jwt.sign({
-                id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-            }, proccess.env.JTW_SECRET,
-            {expiresIn: proccess.env.JTW_EXPIRES });
-
-        return res.json({
-            success: true,
-            token: token,
-            user: {
-                _id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-            }
-        });
-    } else {
-        // login failed
-        return res.json({
-            success: false,
-            message: "Wrong credentials"
-        });
-    }
-};
-
-
 module.exports = {
+    adminLogin,
     login,
-    register,
-    adminlogin
+    register
 };
