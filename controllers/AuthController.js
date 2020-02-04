@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 const adminLogin = async (req, res) => {
     const user = await User
@@ -27,7 +27,7 @@ const adminLogin = async (req, res) => {
                 email: user.email
             },
             process.env.JWT_SECRET,
-            {expiresIn: process.env.JWT_EXPIRES_IN}
+            { expiresIn: process.env.JWT_EXPIRES_IN }
         );
 
         return res.json({
@@ -49,32 +49,29 @@ const adminLogin = async (req, res) => {
     }
 };
 
-const login = async (req, res) => {
+const login = async (req , res) => {
     const user = await User
         .findOne({email: req.body.email})
         .exec();
 
-    // If there is no user with this email
-    if(user === null) {
+    // if there is no user with this email
+    if( user === null ) {
         return res.json({
             success: false,
-            message: "Wrong credentials"
+            message: 'Wrong credentials'
         });
     }
-
     if (user.verifyPasswordSync(req.body.password)) {
         // Success login
-        // Create Token
-        const token = jwt.sign(
-            {
-                _id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email
-            },
+        // Create token
+        const token = jwt.sign({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email
+        },
             process.env.JWT_SECRET,
-            {expiresIn: process.env.JWT_EXPIRES}
-        );
+            { expiresIn: process.env.JWT_SECRET_EXPIRES_IN });
 
         return res.json({
             success: true,
@@ -85,24 +82,29 @@ const login = async (req, res) => {
                 lastName: user.lastName,
                 email: user.email
             }
+
         });
     } else {
-        // login failed
+        // Login failed
         return res.json({
             success: false,
-            message: "Wrong credentials"
+            message: 'Wrong credentials - wrong password'
         });
     }
-};
+}
 
-const register = async (req, res) => {
-    const u = new User({
+
+
+const register = async (req , res) => {
+
+    const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         password: req.body.password
     });
-    u.save()
+
+    await user.save()
         .then(() => {
             res.json({
                 success: true,
@@ -115,10 +117,10 @@ const register = async (req, res) => {
                 message: "User Not created"
             });
         });
-};
+}
 
 module.exports = {
-    adminLogin,
     login,
-    register
-};
+    register,
+    adminLogin
+}

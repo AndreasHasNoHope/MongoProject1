@@ -1,18 +1,20 @@
 const express = require("express");
 const route = express.Router();
-const AdminAuth = require("../../middlewares/adminAuth");
+const adminAuth = require('../../middlewares/adminAuth');
 
-route.get("/",  AdminAuth, (req, res) => {
+route.get("/", adminAuth, (req, res) => {
     res.json({
         success: true,
-        message:"Admin Area"
+        message: 'Admin area'
     });
 });
 
-//Admin Routes
 route.use("/auth", require("./auth"));
-route.use("/users", AdminAuth, require("./Users"));
-route.use("/products", AdminAuth, require("./Products"));
-route.use("/categories", AdminAuth, require("./Categories"));
+route.use("/users", require('./users'));
+route.use("/products", adminAuth, require("./products"));
+route.use("/categories", require("./categories"));
+route.use('/departments', require('./departments'));
+route.use('/photos', require('./photos'));
+
 
 module.exports = route;

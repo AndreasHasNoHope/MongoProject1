@@ -1,8 +1,8 @@
 const express = require("express");
 const route = express.Router();
 const AuthController = require("../../controllers/AuthController");
-const AuthVal = require("../../Validators/AuthVal");
+const AuthValidator = require("../../validators/AuthValidator");
 
-route.post("/login",AuthVal.login, AuthController.adminLogin);
+route.post("/login", AuthValidator.login, AuthController.adminLogin);
 
 module.exports = route;

@@ -16,4 +16,4 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // Import Application Routes
-app.use(require("./Routes/Base"));
+app.use(require("./routes/base"));

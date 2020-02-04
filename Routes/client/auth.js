@@ -1,9 +1,16 @@
-const express = require("express");
+const express = require('express');
 const route = express.Router();
-const AuthController = require("../../controllers/AuthController");
-const AuthVal = require("../../Validators/AuthVal");
+const AuthController = require('../../controllers/AuthController');
+const AuthValidator = require('../../validators/AuthValidator');
 
-route.post("/login",AuthVal.login, AuthController.login);
-route.post("/register",AuthVal.register, AuthController.register);
+
+route.get('/', (req, res) => {
+    res.send('works');
+});
+
+route.post("/login", AuthValidator.login , AuthController.login);
+route.post("/register", AuthValidator.register , AuthController.register);
+
+
 
 module.exports = route;
