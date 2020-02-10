@@ -65,11 +65,11 @@ const login = async (req , res) => {
         // Success login
         // Create token
         const token = jwt.sign({
-            _id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email
-        },
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email
+            },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_SECRET_EXPIRES_IN });
 
@@ -91,7 +91,7 @@ const login = async (req , res) => {
             message: 'Wrong credentials - wrong password'
         });
     }
-}
+};
 
 
 
@@ -117,10 +117,16 @@ const register = async (req , res) => {
                 message: "User Not created"
             });
         });
-}
-
+};
+const checkToken = (req,res) => {
+    res.json({
+        success: true,
+        user: req.user
+    });
+};
 module.exports = {
     login,
     register,
-    adminLogin
-}
+    adminLogin,
+    checkToken
+};

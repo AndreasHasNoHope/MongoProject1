@@ -12,21 +12,29 @@ const getOne = async (req,res) => {
 const create = async (req,res) => {
     const category = new Category ({ title: req.body.title });
     await category.save().then(() => {
-        res.json({ message: "Category Created" });
+        res.json({
+            message: "Category Created"
+        });
     });
 };
 
 
 const deleteCategory = async (req, res) => {
    await Category.deleteOne({_id: req.params.categoryId}).exec();
-      return  res.json({ message: "category deleted" });
+      return  res.json({
+          message: "category deleted"
+      });
 };
 
 const update = async (req, res) => {
-   await Category.updateOne({_id: req.params.categoryId},
-       { title: req.body.title, })
-       .exec();
-        return  res.json({ message: "Category updated" });
+   await Category.updateOne({
+           _id: req.params.categoryId
+       }, {
+       title: req.body.title,
+   }).exec();
+        return  res.json({
+            message: "Category updated"
+        });
 };
 
 

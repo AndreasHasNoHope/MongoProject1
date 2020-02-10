@@ -1,6 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const adminAuth = require('../../middlewares/adminAuth');
+const StatsController = require('../../controllers/StatsController');
 
 route.get("/", adminAuth, (req, res) => {
     res.json({
@@ -9,12 +10,12 @@ route.get("/", adminAuth, (req, res) => {
     });
 });
 
+
+route.use("/stats", adminAuth, StatsController);
 route.use("/auth", require("./auth"));
-route.use("/users", require('./users'));
+route.use("/users", adminAuth, require('./users'));
 route.use("/products", adminAuth, require("./products"));
-route.use("/categories", require("./categories"));
-route.use('/departments', require('./departments'));
-route.use('/photos', require('./photos'));
+route.use("/categories", adminAuth, require("./categories"));
 
 
 module.exports = route;

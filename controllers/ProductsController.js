@@ -87,10 +87,10 @@ const update =  async (req, res) => {
 
             res.json({
                 success: true,
-                message: "product updated" });
+                message: "product updated"
+            });
 
 };
-
 
 
 

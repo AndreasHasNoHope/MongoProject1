@@ -5,7 +5,7 @@ const checkErrors = require('./result');
      check('firstName').isAlpha(),
      check('lastName').isAlpha(),
      check('email').isEmail(),
-     check('password').isLength({ min: 6 }),
+     check('password').isLength({ min: 3 }),
      check('role').isAlpha(),
      checkErrors
 ];
@@ -19,4 +19,4 @@ const checkErrors = require('./result');
  module.exports = {
      create,
      getOne
-}
+};
