@@ -15,16 +15,13 @@ const dashboardStats = async (req, res) => {
             datasets: [
                 {
                     label: "My Categories dataset",
-                    data: [65, 59, 80, 81, 56, 55, 40]
+                    data: counts
                 }
             ]
         }
     });
 };
 
-
-
-
-
-
-module.exports = dashboardStats;
+module.exports = {
+    dashboardStats
+};
