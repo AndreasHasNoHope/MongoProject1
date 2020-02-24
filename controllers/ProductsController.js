@@ -77,9 +77,9 @@ const create = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     await Product
-        .deleteOne({_id: req.params.productId})
-        .exec();
-
+    .deleteOne({_id: req.params.productId})
+    .exec();
+    
     res.json({
         success: true,
         message: "Product Deleted"
@@ -87,16 +87,17 @@ const deleteProduct = async (req, res) => {
 };
 
 const update = async (req, res) => {
-    await Product.updateOne({_id: req.params.productId},
-        {
-            category: req.body.category,
-            title: req.body.title,
-            miniDescription: req.body.miniDescription,
-            description: req.body.description,
-            price: req.body.price,
-            sale: req.body.sale,
-            photo: req.body.photo
-        }).exec();
+    await Product.updateOne({_id: req.params.productId}, 
+    {
+        category: req.body.category,
+        title: req.body.title,
+        miniDescription: req.body.miniDescription,
+        description: req.body.description,
+        price: req.body.price,
+        sale: req.body.sale,
+        photo: req.body.photo,
+        gallery: req.body.gallery
+    }).exec();
 
     await Mail.sendMail({
         from: "App-isteuto <test@develobird.gr>",
@@ -104,11 +105,11 @@ const update = async (req, res) => {
         subject: "Product just updated",
         html: `
             <img src="${req.body.photo}" height="150"/>
-            <h1>${req.body.title}</h1>
+            <h1 style="color:#ff0000">${req.body.title}</h1>
             <h5>${req.body.miniDescription}</h5>
             <h2>${req.body.price}</h2>
         `
-    });
+    }); 
 
     res.json({
         success: true,

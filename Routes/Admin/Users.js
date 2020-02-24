@@ -1,13 +1,12 @@
-const express = require('express');
+const express = require("express");
 const UsersController = require("../../controllers/UsersController");
-const route = express.Router(); //apo tin vivliothiki express xrismopoioume mono to router
-const UserValidator = require('../../validators/UsersValidator');
+const UsersValidator = require("../../validators/UsersValidator");
+const route = express.Router();
 
 route.get("/", UsersController.list);
-route.get("/:userId", UserValidator.getOne, UsersController.getOne);
-route.post("/", UserValidator.create , UsersController.create );
-
-route.delete("/:userId", UsersController.deleteUser );
-route.put("/:userId", UsersController.update );
+route.get("/:userId", UsersValidator.getOne, UsersController.getOne);
+route.post("/", UsersValidator.create, UsersController.create);
+route.delete("/:userId", UsersController.deleteUser);
+route.put("/:userId", UsersController.update);
 
 module.exports = route;

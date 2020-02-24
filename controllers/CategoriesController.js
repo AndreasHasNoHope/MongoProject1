@@ -1,42 +1,43 @@
-const list = async (req,res) => {
-   const category = await Category.find({}).exec();
-      return  res.json(category);
-
+const list = (req, res) => {
+    Category.find({}, (err, users) => {
+        res.json(users);
+    });
 };
 
-const getOne = async (req,res) => {
-   const category = await Category.findOne({_id: req.params.categoryId}).exec();
-       return res.json(category);
+const getOne = (req, res) => {
+    Category.findById(req.params.categoryId, (err, users) => {
+        res.json(users);
+    });
 };
 
-const create = async (req,res) => {
-    const category = new Category ({ title: req.body.title });
-    await category.save().then(() => {
+const create = (req, res) => {
+    const u = new Category({
+        title: req.body.title
+    });
+    u.save().then(() => {
         res.json({
-            message: "Category Created"
+            message: "Category created"
         });
     });
 };
 
-
-const deleteCategory = async (req, res) => {
-   await Category.deleteOne({_id: req.params.categoryId}).exec();
-      return  res.json({
-          message: "category deleted"
-      });
-};
-
-const update = async (req, res) => {
-   await Category.updateOne({
-           _id: req.params.categoryId
-       }, {
-       title: req.body.title,
-   }).exec();
-        return  res.json({
-            message: "Category updated"
+const deleteCategory = (req, res) => {
+    Category.deleteOne({_id: req.params.categoryId}, (err) => {
+        res.json({
+            message: "Category Deleted"
         });
+    });
 };
 
+const update = (req, res) => {
+    Category.updateOne({_id: req.params.categoryId}, {
+        title: req.body.title
+    }, (err) => {
+        res.json({
+            message: "Category Updated"
+        });
+    });
+};
 
 module.exports = {
     list,

@@ -1,27 +1,24 @@
-
-
-const list =  async (req,res) => {
-   const users = await User.find({}).exec();
-       return res.json(users);
+const list = (req, res) => {
+    User.find({}, (err, users) => {
+        res.json(users);
+    });
 };
 
-const getOne =  async (req,res) => {
-   const user = await User.findOne({_id: req.params.userId}).exec();
-         return res.json(user);
-
+const getOne = (req, res) => {
+    User.findById(req.params.userId, (err, users) => {
+        res.json(users);
+    });
 };
 
 const create = (req, res) => {
-
     const u = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: req.body.password,
-        role: req.body.role
+        password: req.body.password
     });
-
-        u.save()
+    u
+        .save()
         .then(() => {
             res.json({
                 message: "User created"
@@ -34,31 +31,28 @@ const create = (req, res) => {
             });
         });
 };
-const deleteUser = async (req, res) => {
-     await User.deleteOne({_id: req.params.userId}).exec();
-         return res.json({ message: "user deleted" });
+
+const deleteUser = (req, res) => {
+    User.deleteOne({_id: req.params.userId}, (err) => {
+        res.json({
+            message: "User Deleted"
+        });
+    });
 };
 
-const update = async (req, res) => {
-   await User.updateOne({_id: req.params.userId},
-        {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: req.body.password,
-            role: req.body.role
-
-        })
-        .exec();
-        return res.json({ message: "user updated" });
-
+const update = (req, res) => {
+    User.updateOne({_id: req.params.userId}, {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: req.body.password,
+        role: req.body.role
+    }, (err) => {
+        res.json({
+            message: "User Updated"
+        });
+    });
 };
-
-
-
-
-
-
 
 module.exports = {
     list,
