@@ -1,11 +1,10 @@
 const dashboardStats = async (req, res) => {
     const categories = await Category.find({}).exec();
-    const labels = [];
+    const labels = categories.map(c => c.title);
     const counts = [];
-    for (let cat of categories) {
-        const num = await Product.count({category: cat._id});
+    for(let cat of categories) {
+        const num =  await  Product.count({ category: cat._id});
         counts.push(num);
-        labels.push(cat.title);
     }
 
     res.json({
@@ -14,14 +13,14 @@ const dashboardStats = async (req, res) => {
             labels: labels,
             datasets: [
                 {
-                    label: "My Categories dataset",
+                    label: "My Categories",
                     data: counts
                 }
             ]
         }
     });
-};
+}
 
 module.exports = {
     dashboardStats
-};
+}

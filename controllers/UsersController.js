@@ -2,12 +2,18 @@
 
 const list =  async (req,res) => {
    const users = await User.find({}).exec();
-       return res.json(users);
+       return res.json({
+           success: true,
+           users: users
+       });
 };
 
 const getOne =  async (req,res) => {
    const user = await User.findOne({_id: req.params.userId}).exec();
-         return res.json(user);
+         return res.json({
+             success: true,
+             user: user
+         });
 
 };
 
@@ -24,11 +30,13 @@ const create = (req, res) => {
         u.save()
         .then(() => {
             res.json({
+                success: true,
                 message: "User created"
             });
         })
         .catch((err) => {
             res.json({
+                success: false,
                 message: "User Not created",
                 error: err
             });
@@ -36,7 +44,10 @@ const create = (req, res) => {
 };
 const deleteUser = async (req, res) => {
      await User.deleteOne({_id: req.params.userId}).exec();
-         return res.json({ message: "user deleted" });
+         return res.json({
+             success: true,
+             message: "user deleted"
+         });
 };
 
 const update = async (req, res) => {
@@ -50,7 +61,10 @@ const update = async (req, res) => {
 
         })
         .exec();
-        return res.json({ message: "user updated" });
+        return res.json({
+            success: true,
+            message: "user updated"
+        });
 
 };
 
