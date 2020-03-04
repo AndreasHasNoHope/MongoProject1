@@ -18,5 +18,4 @@ route.use("/users", adminAuth, require('./users'));
 route.use("/products", adminAuth, require("./products"));
 route.use("/categories", adminAuth ,require("./categories"));
 
-
 module.exports = route;
